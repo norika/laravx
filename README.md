@@ -10,7 +10,7 @@
 ## Author Notes
 - Please set your mail settings from the env file.
 - You can use the db:seed command to use ready data.
-
+- Please use  php artisan storage:link
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
