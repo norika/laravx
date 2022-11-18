@@ -1,0 +1,55 @@
+@extends('admin.layouts.app')
+
+@section('content')
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ __('admin/general.employees') }} - <strong>{{ $employee->name }}</strong></h5>
+        </div>
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="clear_ul">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (Session::has('result'))
+                <div class="alert alert-success">{{ Session::get('result') }}</div>
+            @endisset
+            <form method="POST" enctype="multipart/form-data" action="{{ route('admin.employee.update', $employee) }}">
+                @method('PUT')
+                @csrf
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">{{ __('admin/general.name') }}</label>
+                    <input type="text" class="form-control" id="basic-default-fullname" name="name"
+                        value="{{ $employee->name }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">{{ __('admin/general.phone') }}</label>
+                    <input type="text" class="form-control" id="basic-default-fullname" name="phone"
+                        value="{{ $employee->phone }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">{{ __('admin/general.address') }}</label>
+                    <input type="text" class="form-control" id="basic-default-fullname" name="address"
+                        value="{{ $employee->address }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="nameWithTitle" class="form-label">{{ __('admin/general.company') }}</label>
+                    <select class="form-control" name="company_id">
+                        @foreach ($companies as $company)
+                            <option value="{{ $company->id }}" @if ($company->id == $employee->company_id) selected @endif>
+                                {{ $company->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">{{ __('admin/general.save') }}</button>
+            </form>
+    </div>
+</div>
+@endsection

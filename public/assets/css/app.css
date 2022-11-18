@@ -1,0 +1,11 @@
+.inline {
+    display: inline-block !important;
+    margin-right: 10px;
+}
+.clear_ul {
+    text-align: left;
+    margin: 0;
+}
+.clear_ul li {
+    list-style-type:square;
+}
