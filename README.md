@@ -1,0 +1,2 @@
+# laravx
+Laraval Basic Case
