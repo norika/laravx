@@ -25,7 +25,10 @@ class CompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'             => Rule::unique('companies', 'title')->ignore($this->route("company.id")),
+            'title'             => [
+                'required',
+                Rule::unique('companies', 'title')->ignore($this->route("company.id"))
+            ],
             'description'       => 'required',
             'logo'              => 'nullable|mimes:jpeg,jpg,png,gif',
             'industry'          => 'nullable',
