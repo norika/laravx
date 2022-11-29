@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Company;
 use App\Models\Employee;
-use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = Employee::with("company")->paginate(10);
+        $employees = Employee::with('company:id,title')->paginate(10);
         $companies = Company::get(["title", "id"]);
 
         $data = [

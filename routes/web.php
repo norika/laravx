@@ -35,4 +35,5 @@ Route::name("admin.")
             'company'       => CompanyController::class,
             'industries'    => IndustryController::class
         ]);
+        Route::get("company_ajax_paginate", [CompanyController::class, "ajaxPaginate"])->name("companyAjaxPaginate");
     });

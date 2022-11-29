@@ -83,64 +83,73 @@
                 <div class="alert alert-success">{{ Session::get('result') }}</div>
             @endisset
             <div class="table-responsive text-nowrap">
-                <table id="tabled" class="display table table-striped">
+                <table id="datatable" class="display table table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>{{ __('admin/general.company_name') }}</th>
                             <th>{{ __('admin/general.desc') }}</th>
                             <th>{{ __('admin/general.logo') }}</th>
                             <th>{{ __('admin/general.process') }}</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($companies as $company)
-                            <tr class="result_wrap">
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td>{{ $company->title }}</td>
-                                <td>{{ $company->description }}</td>
-                                <td><img style="width:20%" src="{{ Storage::url('company/' . $company->logo) }}"></td>
-                                <td style="width:20%">
-                                    <a href="{{ route('admin.company.edit', $company->id) }}"
-                                        class="btn rounded-pill btn-primary">{{ __('admin/general.edit') }}</a>
-                                    <button type="button" class="btn rounded-pill btn-danger delete"
-                                        id="{{ $company->id }}">{{ __('admin/general.del') }}</button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
                 </table>
             </div>
     </div>
-    {{ $companies->links('pagination::bootstrap-4') }}
 </div>
 @endsection
 
 @section('footer')
 <script>
     $(document).ready(function() {
-        $('.delete').click(function() {
-            if (confirm("{{ __('admin/general.aresure') }}")) {
-                var itemID = $(this).attr('id');
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        $('#datatable').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: "{{ route('admin.companyAjaxPaginate') }}",
+            columns: [{
+                    data: 'title'
+                },
+                {
+                    data: 'description'
+                },
+                {
+                    data: 'logo'
+                },
+                {
+                    data: 'process',
+                    name: 'process',
+                    orderable: false,
+                    searchable: false
+                }
+            ],
+            "fnDrawCallback": function(oSettings) {
+                $('.delete').click(function() {
+                    if (confirm("{{ __('admin/general.aresure') }}")) {
+                        var itemID = $(this).attr('id');
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                    'content')
+                            }
+                        });
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ route('admin.company.destroy', '') }}/" +
+                                itemID,
+                            success: function() {}
+                        });
+
+                        $(this).parents("tr").animate({
+                            backgroundColor: "#fbc7c7"
+                        }, "fast").animate({
+                            opacity: "hide"
+                        }, "slow");
+                        return false;
                     }
                 });
-                $.ajax({
-                    type: "DELETE",
-                    url: "{{ route('admin.company.destroy', '') }}/" + itemID,
-                    success: function() {}
-                });
-
-                $(this).parents(".result_wrap").animate({
-                    backgroundColor: "#fbc7c7"
-                }, "fast").animate({
-                    opacity: "hide"
-                }, "slow");
-                return false;
             }
         });
+
+
     });
 </script>
 @endsection

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndustryRequest;
 use App\Models\Industry;
-use Illuminate\Http\Request;
 
 class IndustryController extends Controller
 {
