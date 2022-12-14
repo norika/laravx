@@ -18,15 +18,15 @@ class Company extends Model
         'logo'
     ];
 
-    // protected static function booted()
-    // {
-    //     static::creating(function ($model) {
-    //         Mail::to(Auth::user()->email)->queue(new CompanyMail([
-    //             "title" => $model->title,
-    //             "admin" => Auth::user()->name
-    //         ]));
-    //     });
-    // }
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            Mail::to(Auth::user()->email)->queue(new CompanyMail([
+                "title" => $model->title,
+                "admin" => Auth::user()->name
+            ]));
+        });
+    }
 
     public function industry()
     {
